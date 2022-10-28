@@ -1,0 +1,11 @@
+{
+    "Level": 1,
+    "Type": "Tea",
+    "Ingredients": [
+        { "TypeId" : "TeaLeaves", "StackSize" : 1 },
+        { "TypeId" : "Water", "StackSize" : 1 }
+    ],
+    "ProductDefId": "Obj/Materials/Tea",
+    "ProductionTimeHours": 0.8,
+    "EnergyCost": 2.0
+}

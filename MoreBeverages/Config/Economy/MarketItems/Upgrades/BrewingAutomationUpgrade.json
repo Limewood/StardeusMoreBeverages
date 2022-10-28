@@ -1,0 +1,10 @@
+{
+    "Id" : "Obj/Upgrades/BrewingAutomationUpgrade",
+    "Type" : "CFD",
+    "Groups" : [ "Upgrade" ],
+    "MerchantAmountMin" : 1,
+    "MerchantAmountMax" : 10,
+    "Value" : 2000.0,
+    "Rarity" : 0.4,
+    "Volatility" : 0.01
+}

@@ -1,0 +1,11 @@
+{
+    "Id" : "BrewingAutomationUpgrade",
+    "DefId" : "Obj/Upgrades/BrewingAutomationUpgrade",
+    "IsComposite" : true,
+    "NameKey" : "obj.upgrades.brewingautomationupgrade",
+    "IconId" : "Obj/Upgrades/BrewingAutomationUpgrade",
+    "Property" : "Electronic",
+    "Group" : "Upgrade",
+    "EnergyOutput" : 500.0,
+    "Rarity" : 1
+}

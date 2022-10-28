@@ -1,0 +1,42 @@
+{
+    "Layer" : "FreeEntities",
+    "ParentId" : "Obj/Materials/BaseMaterial",
+    "Researchable" : {
+        "Prerequisites" : [ "Research/Coffee" ]
+    },
+    "Components" : [
+        {
+            "Component" : "Aesthetics",
+            "Properties" : [
+                { "Key" : "Aesthetics", "Float" : 1 }
+            ]
+        },
+        {
+            "Component" : "ObjHealth",
+            "Properties" : [
+                { "Key" : "IsInvincible", "Bool" : false }
+            ]
+        },
+        {
+            "Component" : "ObjGraphics",
+            "Properties" : [
+                { "Key" : "Graphic", "String": "Obj/Materials/Tea" },
+                { "Key" : "Scale", "Float": 0.5 }
+            ]
+        },
+        {
+            "Component" : "UnstoredMat",
+            "Properties" : [
+                { "Key" : "Type", "String" : "Tea" }
+            ]
+        },
+        {
+            "Component" : "Flammable",
+            "Properties" : [
+                { "Key" : "IgnitionTemperatureCelsius", "Int" : 250 },
+                { "Key" : "MeltingTemperatureCelsius", "Int" : 500 },
+                { "Key" : "FireChance", "Float" : 0.5 }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,12 @@
+{
+    "Id" : "Obj/Materials/Tea",
+    "Type" : "CFD",
+    "Groups" : [ "Food", "Organic" ],
+    "ProductOf" : [
+        "Obj/Materials/TeaLeaves",
+        "Obj/Materials/Water"
+    ],
+    "Value" : 50.0,
+    "Rarity" : 0.4,
+    "Volatility" : 0.014
+}

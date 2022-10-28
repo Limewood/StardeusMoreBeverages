@@ -1,0 +1,27 @@
+{
+    "Layer" : "FreeEntities",
+    "ParentId" : "Obj/Upgrades/BaseUpgrade",
+    "Researchable" : {
+        "Prerequisites" : [ "Research/AutoKitchen" ]
+    },
+    "Components" : [
+        {
+            "Component" : "ObjGraphics",
+            "Properties" : [
+                { "Key" : "Graphic", "String": "Obj/Upgrades/BrewingAutomationUpgrade" }
+            ]
+        },
+        {
+            "Component" : "UnstoredMat",
+            "Properties" : [
+                { "Key" : "Type", "String" : "BrewingAutomationUpgrade" }
+            ]
+        },
+        {
+            "Component" : "Flammable",
+            "Properties" : [
+                { "Key" : "IsTemperatureResistent", "Bool" : false }
+            ]
+        }
+    ]
+}

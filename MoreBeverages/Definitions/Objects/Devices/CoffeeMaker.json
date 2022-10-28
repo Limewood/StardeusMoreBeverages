@@ -1,0 +1,113 @@
+{
+    "ToolPath" : "Food",
+    "Layer" : "Objects",
+    "ParentId" : "Objects/Devices/BaseDevice",
+    "Researchable" : {
+        "Prerequisites" : [
+            "Research/Coffee"
+        ]
+    },
+    "Components" : [
+        {
+            "Component" : "TileTransform",
+            "Properties" : [
+                { "Key" : "Width", "Int" : 1 },
+                { "Key" : "Height", "Int" : 1 },
+                { "Key" : "IsRotatable", "Bool" : true },
+                { "Key" : "WorkSpot", "Vector2" : { "x" : 0, "y" : -1 } }
+            ]
+        },
+        { "Component" : "EnergyNode" },
+        {
+            "Component" : "Damageable",
+            "Properties" : [
+                { "Key" : "MaxWear", "Int" : 5000 }
+            ]
+        },
+        { "Component" : "SafetyCheck" },
+        {
+            "Component" : "Aesthetics",
+            "Properties" : [
+                { "Key" : "Aesthetics", "Float" : 10 }
+            ]
+        },
+        {
+            "Component" : "AudioSource",
+            "Properties" : [
+                { "Key" : "AmbienceClip", "String" : "Ambience/DeviceOperating04" },
+                { "Key" : "Rolloff", "Vector2" : { "x" : 3, "y" : 12 } },
+                { "Key" : "IsLinkedToEnergy", "Bool" : true }
+            ]
+        },
+        {
+            "Component" : "MatStorage",
+            "Properties" : [
+                { "Key" : "StorageType", "String": "TakeOnly" },
+                { "Key" : "Group", "String" : "Food" },
+                { "Key" : "MaxCapacity", "Int": 10 },
+                { "Key" : "ShowFulnessBar", "Bool" : false },
+                { "Key" : "IsPublic", "Bool" : true }
+            ]
+        },
+        {
+            "Component" : "TileGraphics",
+            "Properties" : [
+                { "Key" : "Type", "String": "Object" },
+                { "Key" : "Graphic", "String": "Objects/Devices/CoffeeMaker" },
+                { "Key" : "HasHeight", "Bool" : true }
+            ]
+        },
+        {
+            "Component" : "Crafter",
+            "Properties" : [
+                { "Key" : "Level", "Int": 1 },
+                { "Key" : "UIItemIcon", "String" : "Icons/Color/Cog" },
+                { "Key" : "CraftKey", "String" : "brew" },
+                { "Key" : "ProgressBarKey", "String" : "brewing.bar" },
+                { "Key" : "IsOperatorRequired", "Bool" : true },
+                { "Key" : "CompatibleTypes", "StringSet": [
+                    "Coffee",
+                    "Tea"
+                ] }
+            ]
+        },
+        {
+            "Component" : "OperatableDevice",
+            "Properties" : [
+                { "Key" : "OperatorOffsets", "Vector2Set" : [
+                    { "x" : 0.15, "y" : -0.42 },
+                    { "x" : -0.67, "y" : 0.27 },
+                    { "x" : -0.13, "y" : 1.4 },
+                    { "x" : 0.69, "y" : 0.33 }
+                ] }
+            ]
+        },
+        {
+            "Component" : "Passability",
+            "Properties" : [
+                { "Key" : "IsPassable", "Bool" : false },
+                { "Key" : "IsWalkable", "Bool" : false },
+                { "Key" : "Difficulty", "Float" : 1 }
+            ]
+        },
+        {
+            "Component" : "Constructable",
+            "Properties" : [
+                { "Key" : "WorkAmount", "Int" : 1500 },
+                {
+                    "Key" : "Contents",
+                    "RawMaterials" : [
+                        { "TypeId" : "Glass", "StackSize" : 1 },
+                        { "TypeId" : "Plastic", "StackSize" : 2 },
+                        { "TypeId" : "Transistor", "StackSize" : 1 },
+                        { "TypeId" : "CopperWire", "StackSize" : 1 }
+                    ]
+                },
+                { "Key" : "SkillChecks", "StringSet": ["Construction" ] },
+                { "Key" : "SkillCheckAmounts", "IntSet" : [ 3 ] },
+                { "Key" : "Promises", "StringSet": [ "Rest" ] },
+                { "Key" : "PromiseAmounts", "IntSet" : [ 10 ] }
+            ]
+        }
+    ]
+}

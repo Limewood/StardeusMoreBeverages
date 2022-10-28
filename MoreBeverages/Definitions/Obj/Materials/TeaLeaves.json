@@ -1,0 +1,32 @@
+{
+    "Layer" : "FreeEntities",
+    "ParentId" : "Obj/Materials/BaseMaterial",
+    "Components" : [
+        {
+            "Component" : "ObjHealth",
+            "Properties" : [
+                { "Key" : "IsInvincible", "Bool" : false }
+            ]
+        },
+        {
+            "Component" : "ObjGraphics",
+            "Properties" : [
+                { "Key" : "Graphic", "String": "Obj/Materials/TeaLeaves" }
+            ]
+        },
+        {
+            "Component" : "UnstoredMat",
+            "Properties" : [
+                { "Key" : "Type", "String" : "TeaLeaves" }
+            ]
+        },
+        {
+            "Component" : "Flammable",
+            "Properties" : [
+                { "Key" : "IgnitionTemperatureCelsius", "Int" : 200 },
+                { "Key" : "MeltingTemperatureCelsius", "Int" : 400 },
+                { "Key" : "FireChance", "Float" : 0.8 }
+            ]
+        }
+    ]
+}

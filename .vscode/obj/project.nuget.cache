@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "P7aV6XVhAAb+dmVZfNIOxqt02ITyrIVQAgrL63Kv9lS9/dvCL+D2xjckqmU/Wfd0Nw1ifi3vDknT4G/Wf48ZcQ==",
+  "success": true,
+  "projectFilePath": "/home/joakim/Spel/Stardeus/Mods/MoreBeverages/.vscode/mod.csproj",
+  "expectedPackageFiles": [
+    "/home/joakim/.nuget/packages/microsoft.netframework.referenceassemblies/1.0.2/microsoft.netframework.referenceassemblies.1.0.2.nupkg.sha512",
+    "/home/joakim/.nuget/packages/microsoft.netframework.referenceassemblies.net47/1.0.2/microsoft.netframework.referenceassemblies.net47.1.0.2.nupkg.sha512"
+  ],
+  "logs": []
+}

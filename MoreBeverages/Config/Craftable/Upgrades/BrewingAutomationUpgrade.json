@@ -1,0 +1,12 @@
+{
+    "Level": 1,
+    "Type": "Upgrades",
+    "Ingredients": [
+        { "TypeId" : "Microchip", "StackSize" : 1 },
+        { "TypeId" : "Rubber", "StackSize" : 1 },
+        { "TypeId" : "CopperPlate", "StackSize" : 2 }
+    ],
+    "ProductDefId": "Obj/Upgrades/BrewingAutomationUpgrade",
+    "ProductionTimeHours": 90.0,
+    "EnergyCost": 240.0
+}

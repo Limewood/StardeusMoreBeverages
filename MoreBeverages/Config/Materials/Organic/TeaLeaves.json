@@ -1,0 +1,9 @@
+{
+    "Id" : "TeaLeaves",
+    "IsComposite" : true,
+    "NameKey" : "material.TeaLeaves",
+    "IconId" : "Obj/Materials/TeaLeaves",
+    "Property" : "Nutrient",
+    "EnergyOutput" : 75.0,
+    "Rarity" : 3
+}

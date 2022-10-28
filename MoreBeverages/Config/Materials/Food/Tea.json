@@ -1,0 +1,10 @@
+{
+    "Id" : "Tea",
+    "IsComposite" : true,
+    "NameKey" : "material.Tea",
+    "IconId" : "Obj/Materials/Tea",
+    "Property" : "Addictive",
+    "Group" : "Drink",
+    "EnergyOutput" : 180.0,
+    "Rarity" : 3
+}
