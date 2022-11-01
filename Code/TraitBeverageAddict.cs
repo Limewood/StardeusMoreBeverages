@@ -50,7 +50,7 @@ namespace MoreBeverages.AI.Traits
 				if (being.Brain.CurrentAd.JobType == JobType.Recreation)
 				{
 					if (being.Brain.CurrentAd.CurrentAction.TypeHash == Animator.StringToHash("Drink")) {
-						ticksSinceLastBeverage.PutOverwrite(being.Id, ticks);
+						ticksSinceLastBeverage[being.Id] = ticks;
 					}
 					return false;
 				}
@@ -65,7 +65,7 @@ namespace MoreBeverages.AI.Traits
 			if (savedTicks == 0L)
 			{
 				savedTicks = ticks + Rng.URange(0, delay);
-				ticksSinceLastBeverage.PutOverwrite(being.Id, savedTicks);
+				ticksSinceLastBeverage[being.Id] = savedTicks;
 			}
 			if (ticks > savedTicks + delay)
 			{
@@ -74,7 +74,7 @@ namespace MoreBeverages.AI.Traits
 				float v = Mathf.Lerp(0.2f, 1f, t);
 				if (being.S.Rng.Chance(v))
 				{
-					ticksSinceLastBeverage.PutOverwrite(being.Id, ticks);
+					ticksSinceLastBeverage[being.Id] = ticks;
 					GetBeverage(being);
 					return true;
 				}
