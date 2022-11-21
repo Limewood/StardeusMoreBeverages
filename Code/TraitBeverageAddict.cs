@@ -90,7 +90,7 @@ namespace MoreBeverages.AI.Traits
 			{
 				if (being.Brain.CurrentAd != null)
 				{
-					being.Brain.DropCurrentAdBecause("beverage.addict".T(BeverageOfChoice));
+					being.Brain.DropCurrentAdAsImpossible("beverage.addict".T(BeverageOfChoice));
 				}
 				recreationActivity.ExecuteFor(being, immediately: false);
 			}

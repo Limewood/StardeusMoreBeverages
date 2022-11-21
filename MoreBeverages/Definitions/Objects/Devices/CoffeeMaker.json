@@ -58,6 +58,9 @@
             ]
         },
         {
+            "Component" : "ExtraInfo"
+        },
+        {
             "Component" : "Crafter",
             "Properties" : [
                 { "Key" : "Level", "Int": 1 },

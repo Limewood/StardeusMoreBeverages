@@ -5,9 +5,9 @@
     "PreviewIcon" : "Icons/Color/CoffeeCup",
     "Researchable" : {
         "IsTreeNode" : true,
-        "Energy" : 35,
-        "Memory" : 6,
-        "Storage" : 10,
+        "Energy" : 75,
+        "Memory" : 12,
+        "Storage" : 12,
         "Prerequisites" : [
             "Research/VegetarianFood"
         ]
