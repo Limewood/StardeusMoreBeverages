@@ -3,7 +3,7 @@
     "SteamWorkshop" : true,
     "Name" : "More beverages (Tea)",
     "Description" : "More beverages for your colonists to enjoy (just tea for now).\n\nAdds Tea as a beverage that can be made in the Beverage Machine (previously Coffee Machine).\n\nAdds Tea and Coffee addict traits. Beverage addicts will try to drink tea/coffee more often than other colonists.\n\nAdds the Tea Bush, which can be grown in a planter or a vase, producing Tea Leaves and plant fiber.\n\nAdds the Brewing Automation Upgrade, which allows the Beverage machine to work without an operator.",
-    "ModVersion" : "1.0.3",
-    "GameVersion" : "0.6.129",
+    "ModVersion" : "1.0.4",
+    "GameVersion" : "0.6.131",
     "Dependencies" : [ "Core" ]
 }

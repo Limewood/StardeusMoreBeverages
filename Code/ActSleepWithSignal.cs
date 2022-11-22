@@ -289,6 +289,8 @@ namespace MoreBeverages.AI.Actions
 			restNeed.DropMultiplier = 2f;
 			worker.Brain.IsUnconscious = true;
 			sleepNeed.Add(5f / 72f);
+			ad.DebugState = "Sleeping";
+			IgnoreMaxWorkTimeLimit = true;
 			if (particles == null && showParticlesIn-- < 0)
 			{
 				particles = new ParticlesSys.Data
@@ -336,11 +338,14 @@ namespace MoreBeverages.AI.Actions
 		{
 			if (!Ready.AreasInitial)
 			{
+				ad.DebugState = "Areas not ready";
 				return StillWorking;
 			}
+			ad.DebugState = "Areas ready";
 			int num = S.Sys.Areas.IslandAt(worker.PosIdx);
 			if (num == 0)
 			{
+				ad.DebugState = "Worker island is 0";
 				if (Ready.Areas)
 				{
 					D.ErrSoft("Being is without an island! Pos {0} {1}", worker.PosIdx, worker);
@@ -349,9 +354,11 @@ namespace MoreBeverages.AI.Actions
 				if (num2 != 0)
 				{
 					D.Err("No island, but room exists: {0}", num2);
-					return StillWorking;
 				}
+				else
+				{
 				D.ErrSoft("No room either!");
+				}
 				num = S.Sys.Areas.IslandAt(worker.PosIdx);
 			}
 			if (!FindSleepSpot(num))
@@ -425,6 +432,7 @@ namespace MoreBeverages.AI.Actions
 			}
 			if (slotPosIdx != worker.PosIdx)
 			{
+				ad.DebugState = "Moving to target";
 				subAction = ActMoveToPos.SubActionTo(slotPosIdx, worker, updateAnchor: true, groundedSoftFail: false);
 			}
 			else

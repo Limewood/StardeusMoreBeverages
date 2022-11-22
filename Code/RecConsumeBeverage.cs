@@ -28,9 +28,12 @@ namespace MoreBeverages.AI.Recreation {
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
 		private static void Register()
 		{
-			DrinkBeverage = "beverage.drink".T();
 			RecreationActivity.Add("RecConsumeBeverage", new RecConsumeBeverage());
 			// TODO How to remove RecConsumeCoffee?
+		}
+
+		public static void Init() {
+			DrinkBeverage = "beverage.drink".T();
 		}
 
 		protected override void PostProcessAd(Advert ad)

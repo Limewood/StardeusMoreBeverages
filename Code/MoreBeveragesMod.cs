@@ -16,33 +16,26 @@ using UnityEngine;
 using System;
 using System.Reflection;
 
-namespace MoreBeverages
-{
-	public sealed class MoreBeveragesMod
-	{
-		public static string NoBeverage(MatType drinkMat)
-		{
+namespace MoreBeverages {
+	public sealed class MoreBeveragesMod {
+		public static string NoBeverage(MatType drinkMat) {
 			return "beverage.lack".T(drinkMat.NameT);
 		}
 
-		public static string NoMorningBeverage(MatType drinkMat)
-		{
+		public static string NoMorningBeverage(MatType drinkMat) {
 			return "beverage.lack.morning".T(drinkMat.NameT);
 		}
 
-		public static string HadFavouriteBeverage(MatType drinkMat)
-		{
+		public static string HadFavouriteBeverage(MatType drinkMat) {
 			return "beverage.drank".T(drinkMat.NameT);
 		}
 
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-		private static void Register()
-		{
+		private static void Register() {
 			The.SysSig.GameIdChanged.AddListener((_) => OnInitialize());
 		}
 
-		private static void OnInitialize()
-		{
+		private static void OnInitialize() {
 			ActSleepWithSignal.BeingWokeUp.AddListener(OnBeingWokeUp);
 			// Temporary fix until overriding strings works
 			Type t = typeof(Game.Utils.Translations);
@@ -51,23 +44,19 @@ namespace MoreBeverages
 			fallback[Animator.StringToHash("objects.devices.coffeemaker")] = "objects.devices.beveragemaker".T();
 			fallback[Animator.StringToHash("objects.devices.coffeemaker.desc")] = "objects.devices.beveragemaker.desc".T();
 			fallback[Animator.StringToHash("research.coffee")] = "research.beverages".T();
+			RecConsumeBeverage.Init();
 		}
 
-		private static void OnBeingWokeUp(Being worker)
-		{
-			if (worker.Persona.Species.Type == SpeciesType.Human)
-			{
+		private static void OnBeingWokeUp(Being worker) {
+			if (worker.Persona.Species.IsHumanoid) {
 				float t = Mathf.InverseLerp(100f, 20f, worker.Needs.GetNeed(NeedId.Sleep).Value);
 				float v = Mathf.Lerp(0.2f, 1f, t);
-				if (worker.S.Rng.Chance(v))
-				{
+				if (worker.S.Rng.Chance(v)) {
 					RecConsumeBeverage recreationActivity = (RecConsumeBeverage) RecreationActivity.Find("RecConsumeBeverage");
-					if (recreationActivity.IsAvailableFor(worker, out var _))
-					{
+					if (recreationActivity.IsAvailableFor(worker, out var _)) {
 						recreationActivity.ExecuteFor(worker, immediately: false);
 					}
-					else
-					{
+					else {
 						TraitBeverageAddict trait = recreationActivity.GetBeverageAddictionTrait(worker);
 						int moodChange;
 						string beverage;
