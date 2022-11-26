@@ -1,4 +1,6 @@
 using MoreBeverages;
+using MoreBeverages.Utils;
+using System;
 using System.Collections.Generic;
 using Game;
 using Game.AI;
@@ -26,57 +28,7 @@ namespace MoreBeverages.AI.Actions
 
 		public static Signal1<Being> BeingWokeUp = new Signal1<Being>("BeingWokeUp");
 
-		private bool hasReachedSleepSpot;
-
-		private Slot slot;
-
-		private ISleepable targetBed;
-
-		private Attachment ownedBedAtt;
-
-		private Slot ownedBed;
-
-		private bool checkedForOwnedBed;
-
-		private long lastTick;
-
-		private float sleepNeedBefore;
-
-		private bool isSleepComplete;
-
-		private Need sleepNeed;
-
-		private Need toiletNeed;
-
-		private Need hungerNeed;
-
-		private Need restNeed;
-
-		private int emergencyWakeupAt;
-
-		private bool isEmergencySleep;
-
-		private bool isUsingBed;
-
-		private int slotIdx = -1;
-
-		private ParticlesSys.Data particles;
-
-		private int showParticlesIn;
-
-		private List<int> blacklistedBeds;
-
-		private int BedAttachmentType
-		{
-			get
-			{
-				if (!worker.Persona.Species.IsPet)
-				{
-					return AttachmentType.PersonBed;
-				}
-				return AttachmentType.PetBed;
-			}
-		}
+		private ActSleep sleepAction;
 
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
 		private static void Register()
@@ -87,84 +39,47 @@ namespace MoreBeverages.AI.Actions
 		public ActSleepWithSignal(Advert ad, Being worker)
 			: base(ad, worker)
 		{
+			initAction(ad, worker);
 		}
 
 		public override void OnSave()
 		{
-			ComponentData vars = ad.Vars;
-			vars.SetBool("ReachedSpot", hasReachedSleepSpot);
-			vars.SetComponent("BedId", "BedComp", targetBed);
-			vars.SetFloat("SleepBefore", sleepNeedBefore);
-			vars.SetBool("EmergencySleep", isEmergencySleep);
-			vars.SetInt("SlotIdx", slotIdx);
-			vars.SetInt("SlotNum", slot?.Number ?? 0);
+			sleepAction.OnSave();
+		}
+
+		private void initAction(Advert ad, Being worker) {
+			if (sleepAction == null) {
+				sleepAction = new ActSleep(ad, worker);
+			}
 		}
 
 		protected override void OnLoad(ComponentData data)
 		{
-			sleepNeedBefore = data.GetFloat("SleepBefore", 0f);
-			hasReachedSleepSpot = data.GetBool("ReachedSpot", hasReachedSleepSpot);
-			isEmergencySleep = data.GetBool("EmergencySleep", def: false);
-			targetBed = data.GetComponent<ISleepable>(S, "BedId", "BedComp");
-			ownedBedAtt = S.Sys.Att.BeingToTileFirst(worker.Id, BedAttachmentType);
-			ownedBed = ownedBedAtt?.Slot;
-			if (targetBed != null)
-			{
-				Entity entity = targetBed.Entity;
-				for (int i = 0; i < entity.Components.Length; i++)
-				{
-					if (entity.Components[i] is ISleepable sleepable && sleepable.IsCompatibleWith(worker))
-					{
-						targetBed = sleepable;
-						slotIdx = data.GetInt("SlotIdx", 0);
-						int @int = data.GetInt("SlotNum", 0);
-						slot = targetBed.GetSlot(slotIdx, @int);
-						if (slot == null)
-						{
-							D.Err("Could not find slot {0} in bed with id: {1}", slotIdx, targetBed.EntityId);
-							targetBed = null;
-						}
-						else if (!slot.Reserve(worker))
-						{
-							D.Err("Trying to reserve a bed during load, but it is reserved by someone else! {0}", this);
-							targetBed = null;
-						}
-						break;
-					}
-				}
-				if (targetBed != null)
-				{
-					if (hasReachedSleepSpot)
-					{
-						if (!UseBed())
-						{
-							targetBed = null;
-						}
-					}
-					else
-					{
-						MoveToTarget();
-					}
-				}
-			}
-			if (isEmergencySleep)
-			{
-				EmergencySleep();
-			}
+			// Need to call this here since the virtual method OnLoad is called in the base constructor
+			initAction(ad, worker);
+			ReflectionUtils.CallMethod(typeof(ActSleep), sleepAction, "OnLoad", new object[]{data});
 		}
 
 		public override void Cleanup()
 		{
+			Type type = typeof(ActSleep);
+			bool isSleepComplete = (bool) ReflectionUtils.GetValue(type, sleepAction, "isSleepComplete");
+			float sleepNeedBefore = (float) ReflectionUtils.GetValue(type, sleepAction, "sleepNeedBefore");
 			if (!isSleepComplete && sleepNeedBefore < worker.Needs.GetNeed(NeedId.Sleep).Value - 3f)
 			{
-				ApplySleepInterrupted();
+				ReflectionUtils.CallMethod(typeof(ActSleep), sleepAction, "ApplySleepInterrupted");
 			}
 			worker.Brain.IsUnconscious = false;
+			bool isEmergencySleep = (bool) ReflectionUtils.GetValue(type, sleepAction, "isEmergencySleep");
 			if (isEmergencySleep)
 			{
 				isEmergencySleep = false;
-				ApplyNoBedPenalty();
+				ReflectionUtils.CallMethod(typeof(ActSleep), sleepAction, "ApplyNoBedPenalty");
 			}
+			Need sleepNeed = (Need) ReflectionUtils.GetValue(type, sleepAction, "sleepNeed");
+			Need toiletNeed = (Need) ReflectionUtils.GetValue(type, sleepAction, "toiletNeed");
+			Need hungerNeed = (Need) ReflectionUtils.GetValue(type, sleepAction, "hungerNeed");
+			Need restNeed = (Need) ReflectionUtils.GetValue(type, sleepAction, "restNeed");
 			if (sleepNeed != null)
 			{
 				sleepNeed.DropMultiplier = 1f;
@@ -176,6 +91,8 @@ namespace MoreBeverages.AI.Actions
 
 				sleepNeed = null;
 			}
+			ISleepable targetBed = (ISleepable) ReflectionUtils.GetValue(type, sleepAction, "targetBed");
+			Slot slot = (Slot) ReflectionUtils.GetValue(type, sleepAction, "slot");
 			if (targetBed != null)
 			{
 				targetBed.Tile.Damageable.AddWear();
@@ -183,8 +100,11 @@ namespace MoreBeverages.AI.Actions
 				{
 					worker.Graphics.SetVisible();
 				}
+				Slot ownedBed = (Slot) ReflectionUtils.GetValue(type, sleepAction, "ownedBed");
+				Attachment ownedBedAtt = (Attachment) ReflectionUtils.GetValue(type, sleepAction, "ownedBedAtt");
 				if (ownedBed == null)
 				{
+					int BedAttachmentType = (int) ReflectionUtils.GetPropertyValue(type, sleepAction, "BedAttachmentType");
 					ownedBedAtt = Attachment.BeingToSlot(S.Ticks, worker, slot, BedAttachmentType, 0f, isOwnership: true);
 					if (ownedBedAtt != null)
 					{
@@ -204,6 +124,7 @@ namespace MoreBeverages.AI.Actions
 				slot.Remove(worker);
 				slot = null;
 			}
+			ParticlesSys.Data particles = (ParticlesSys.Data) ReflectionUtils.GetValue(type, sleepAction, "particles");
 			if (particles != null)
 			{
 				S.Sys.Particles.RemoveParticles(particles);
@@ -215,313 +136,7 @@ namespace MoreBeverages.AI.Actions
 
 		protected override ExecutionResult DoWork()
 		{
-			if (sleepNeed == null)
-			{
-				if (worker.Needs == null)
-				{
-					D.Err("Worker has null needs in sleep act: {0}", worker);
-					return Failure(T.AdRejUndefined);
-				}
-				InitializeNeeds();
-				if (sleepNeed == null)
-				{
-					D.Err("Worker has no sleep need, but trying to do ActSleep! {0}", worker);
-					return Failure(T.AdRejUndefined);
-				}
-				showParticlesIn = Mathf.RoundToInt(3f * Rng.URange(2f, 5f));
-			}
-			if (!isEmergencySleep && targetBed == null)
-			{
-				return DoRegularSleep();
-			}
-			if (subAction != null)
-			{
-				return RunSubAction();
-			}
-			DoSleep();
-			_ = S.Ticks;
-			_ = lastTick;
-			if (isEmergencySleep)
-			{
-				if (emergencyWakeupAt == 0)
-				{
-					emergencyWakeupAt = S.Rng.Range(40, 60);
-				}
-				if (sleepNeed.Value > (float)emergencyWakeupAt)
-				{
-					ApplyPrematureWakeup();
-					isSleepComplete = true;
-					return Success;
-				}
-			}
-			else if (hasReachedSleepSpot)
-			{
-				if (slot == null)
-				{
-					slot = targetBed?.Slots?.SafeGet(0);
-				}
-				if (!UseBed())
-				{
-					return Failure(T.AdRejCouldNotReserve);
-				}
-				ISleepable sleepable = targetBed;
-				if (sleepable == null || !sleepable.Entity.IsActive)
-				{
-					ApplyPrematureWakeup();
-					return Failure(T.AdRejInterrupted);
-				}
-				_ = sleepNeed.Value;
-				if (sleepNeed.IsSatisfied)
-				{
-					ApplyBedBonus();
-					isSleepComplete = true;
-					return Success;
-				}
-			}
-			return StillWorking;
-		}
-
-		private void DoSleep()
-		{
-			sleepNeed.DropMultiplier = 0f;
-			toiletNeed.DropMultiplier = 0.25f;
-			hungerNeed.DropMultiplier = 0.25f;
-			restNeed.DropMultiplier = 2f;
-			worker.Brain.IsUnconscious = true;
-			sleepNeed.Add(5f / 72f);
-			ad.DebugState = "Sleeping";
-			IgnoreMaxWorkTimeLimit = true;
-			if (particles == null && showParticlesIn-- < 0)
-			{
-				particles = new ParticlesSys.Data
-				{
-					Owner = worker,
-					IsEmitOnly = true,
-					EmitChance = 1f,
-					PrefabName = "SleepFX",
-					Play = true
-				};
-				S.Sys.Particles.AddParticles(particles);
-				worker.Brain.HideAllInfo();
-			}
-		}
-
-		private ExecutionResult RunSubAction()
-		{
-			ExecutionResult result = subAction.Execute();
-			if (result.IsFinished)
-			{
-				if (result.IsSuccess)
-				{
-					subAction = null;
-					hasReachedSleepSpot = true;
-					lastTick = S.Ticks;
-					return StillWorking;
-				}
-				subAction = null;
-				if (slot != null)
-				{
-					slot.Unreserve(worker);
-					slot = null;
-				}
-				if (targetBed != null)
-				{
-					(blacklistedBeds ?? (blacklistedBeds = new List<int>())).Add(targetBed.EntityId);
-					targetBed = null;
-				}
-				return StillWorking;
-			}
-			return result;
-		}
-
-		private ExecutionResult DoRegularSleep()
-		{
-			if (!Ready.AreasInitial)
-			{
-				ad.DebugState = "Areas not ready";
-				return StillWorking;
-			}
-			ad.DebugState = "Areas ready";
-			int num = S.Sys.Areas.IslandAt(worker.PosIdx);
-			if (num == 0)
-			{
-				ad.DebugState = "Worker island is 0";
-				if (Ready.Areas)
-				{
-					D.ErrSoft("Being is without an island! Pos {0} {1}", worker.PosIdx, worker);
-				}
-				int num2 = S.Sys.Areas.At(worker.PosIdx);
-				if (num2 != 0)
-				{
-					D.Err("No island, but room exists: {0}", num2);
-				}
-				else
-				{
-				D.ErrSoft("No room either!");
-				}
-				num = S.Sys.Areas.IslandAt(worker.PosIdx);
-			}
-			if (!FindSleepSpot(num))
-			{
-				return Failure(T.AdRejCouldNotReserve);
-			}
-			if (targetBed == null)
-			{
-				if ((sleepNeed.Value < -50f || sleepNeed.Demand > 0.99f) && S.Rng.Chance(0.8f))
-				{
-					EmergencySleep();
-					return StillWorking;
-				}
-				ApplyNoBedPenalty();
-				return Failure(T.AdRejLackingBed);
-			}
-			return StillWorking;
-		}
-
-		private void InitializeNeeds()
-		{
-			sleepNeed = worker.Needs.GetNeed(NeedId.Sleep);
-			hungerNeed = worker.Needs.GetNeed(NeedId.Hunger);
-			toiletNeed = worker.Needs.GetNeed(NeedId.Toilet);
-			restNeed = worker.Needs.GetNeed(NeedId.Rest);
-			if (Mathf.Approximately(sleepNeedBefore, 0f))
-			{
-				sleepNeedBefore = sleepNeed.Value;
-			}
-		}
-
-		private bool FindSleepSpot(int workerIsland)
-		{
-			if (slot != null)
-			{
-				return true;
-			}
-			if (!checkedForOwnedBed)
-			{
-				checkedForOwnedBed = true;
-				ownedBedAtt = S.Sys.Att.BeingToTileFirst(worker.Id, BedAttachmentType);
-				if (ownedBedAtt != null)
-				{
-					ISleepable sleepable = S.Components.Find<ISleepable>(ownedBedAtt.TileId, ownedBedAtt.SlotComp);
-					ownedBed = sleepable?.GetSlot(ownedBedAtt.SlotPosIdx, ownedBedAtt.SlotNumber);
-					if (ownedBed != null)
-					{
-						slot = ownedBed;
-						slotIdx = ownedBed.SlotPosIdx;
-						targetBed = sleepable;
-						return MoveToTarget();
-					}
-				}
-			}
-			slot = S.Sys.Slots.FindForSleep(worker, workerIsland, blacklistedBeds);
-			if (slot == null)
-			{
-				return true;
-			}
-			slotIdx = slot.SlotPosIdx;
-			targetBed = slot.Parent as ISleepable;
-			return MoveToTarget();
-		}
-
-		private bool MoveToTarget()
-		{
-			int slotPosIdx = slot.SlotPosIdx;
-			if (!slot.Reserve(worker))
-			{
-				return false;
-			}
-			if (slotPosIdx != worker.PosIdx)
-			{
-				ad.DebugState = "Moving to target";
-				subAction = ActMoveToPos.SubActionTo(slotPosIdx, worker, updateAnchor: true, groundedSoftFail: false);
-			}
-			else
-			{
-				hasReachedSleepSpot = true;
-			}
-			return true;
-		}
-
-		private void EmergencySleep()
-		{
-			isEmergencySleep = true;
-			worker.Graphics.SetVertical(isVertical: false);
-		}
-
-		private bool UseBed()
-		{
-			if (isUsingBed && worker.Health.IsDamaged)
-			{
-				float num = 1f - hungerNeed.Demand;
-				if (num > 0.33f)
-				{
-					worker.Health.RepairDamage(0.005f * num);
-				}
-			}
-			if (!isUsingBed || Rng.UChance(0.001f))
-			{
-				if (!isUsingBed && !slot.Put(worker))
-				{
-					return false;
-				}
-				if (!isUsingBed && targetBed.HideBeing)
-				{
-					worker.Graphics.SetHidden();
-					worker.Graphics.SetOffset(slot.ContainedPosition - worker.Position);
-				}
-				else
-				{
-					worker.Graphics.SetVertical(isVertical: false);
-					if (worker.Persona.Species.IsPet)
-					{
-						worker.Graphics.SetFacing(Rng.UFrom(Facing.Types));
-						worker.Graphics.SetRotation(Rng.URange(-45f, 45f));
-					}
-					else
-					{
-						worker.Graphics.SetFacing(targetBed.SpotRotation);
-						worker.Graphics.SetRotation(Rng.URange(-10f, 10f));
-					}
-					if (!isUsingBed)
-					{
-						Vector2 vector = EntityUtils.CenterOf(worker.PosIdx) - worker.Position;
-						worker.Graphics.SetOffset(slot.ContainedOffset + vector);
-					}
-				}
-				isUsingBed = true;
-			}
-			return true;
-		}
-
-		private void ApplySleepInterrupted()
-		{
-			worker.Mood.AddEffect(MoodEffect.Create(S.Ticks, MoodEffect.Duration8h, T.SleepInterrupted, -5));
-		}
-
-		private void ApplyPrematureWakeup()
-		{
-			worker.Mood.AddEffect(MoodEffect.Create(S.Ticks, MoodEffect.Duration8h, T.SleptTooShort, -5));
-		}
-
-		private void ApplyNoBedPenalty()
-		{
-			worker.Mood.AddEffect(MoodEffect.Create(S.Ticks, MoodEffect.Duration8h, T.NowhereToSleep, -5));
-		}
-
-		private void ApplyBedBonus()
-		{
-			if (ownedBed == slot)
-			{
-				worker.Mood.AddEffect(MoodEffect.Create(S.Ticks, MoodEffect.Duration4h, T.SleptInFamiliarBed, 5));
-			}
-			else if (ownedBed != slot)
-			{
-				worker.Mood.AddEffect(MoodEffect.Create(S.Ticks, MoodEffect.Duration4h, T.SleptInUnfamiliarBed, -1));
-			}
-			else
-			{
-				worker.Mood.AddEffect(MoodEffect.Create(S.Ticks, MoodEffect.Duration4h, T.SleptInBed, 3));
-			}
+			return (ExecutionResult) ReflectionUtils.CallMethod(typeof(ActSleep), sleepAction, "DoWork");
 		}
 	}
 }
