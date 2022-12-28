@@ -47,7 +47,7 @@ namespace MoreBeverages.AI.Traits
 			}
 			if (being.Brain.CurrentAd != null)
 			{
-				if (being.Brain.CurrentAd.JobType == JobType.Recreation)
+				if (being.Brain.CurrentAd.JobTypeHash == JobType.HRecreation)
 				{
 					if (being.Brain.CurrentAd.CurrentAction.TypeHash == Animator.StringToHash("Drink")) {
 						ticksSinceLastBeverage[being.Id] = ticks;
@@ -61,7 +61,10 @@ namespace MoreBeverages.AI.Traits
 				}
 			}
 			int delay = beverageSeekDelay;
-			long savedTicks = ticksSinceLastBeverage.Get(being.Id, 0L);
+			long savedTicks = 0;
+			if (ticksSinceLastBeverage.TryGetValue(being.Id, out var value)) {
+				savedTicks = value;
+			}
 			if (savedTicks == 0L)
 			{
 				savedTicks = ticks + Rng.URange(0, delay);
