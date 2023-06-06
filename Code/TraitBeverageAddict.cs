@@ -72,7 +72,7 @@ namespace MoreBeverages.AI.Traits
 			}
 			if (ticks > savedTicks + delay)
 			{
-				Need sleepNeed = being.Needs.GetNeed(NeedId.Sleep);
+				Need sleepNeed = being.Needs.GetNeed(NeedIdH.Sleep);
 				float t = Mathf.InverseLerp(100f, 20f, sleepNeed.Value);
 				float v = Mathf.Lerp(0.2f, 1f, t);
 				if (being.S.Rng.Chance(v))

@@ -65,7 +65,7 @@ namespace MoreBeverages.AI.Actions
 			Type type = typeof(ActSleep);
 			bool isSleepComplete = (bool) ReflectionUtils.GetValue(type, sleepAction, "isSleepComplete");
 			float sleepNeedBefore = (float) ReflectionUtils.GetValue(type, sleepAction, "sleepNeedBefore");
-			if (!isSleepComplete && sleepNeedBefore < worker.Needs.GetNeed(NeedId.Sleep).Value - 3f)
+			if (!isSleepComplete && sleepNeedBefore < worker.Needs.GetNeed(NeedIdH.Sleep).Value - 3f)
 			{
 				ReflectionUtils.CallMethod(typeof(ActSleep), sleepAction, "ApplySleepInterrupted");
 			}

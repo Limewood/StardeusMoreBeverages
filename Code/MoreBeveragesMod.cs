@@ -49,7 +49,7 @@ namespace MoreBeverages {
 
 		private static void OnBeingWokeUp(Being worker) {
 			if (worker.Persona.Species.IsHumanoid) {
-				float t = Mathf.InverseLerp(100f, 20f, worker.Needs.GetNeed(NeedId.Sleep).Value);
+				float t = Mathf.InverseLerp(100f, 20f, worker.Needs.GetNeed(NeedIdH.Sleep).Value);
 				float v = Mathf.Lerp(0.2f, 1f, t);
 				if (worker.S.Rng.Chance(v)) {
 					RecConsumeBeverage recreationActivity = (RecConsumeBeverage) RecreationActivity.Find("RecConsumeBeverage");

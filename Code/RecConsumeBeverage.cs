@@ -79,8 +79,8 @@ namespace MoreBeverages.AI.Recreation {
 				}
 			}
 			
-			float num = being.Needs.GetNeed(NeedId.Sleep).Demand;
-			if (being.Needs.TryGetNeed(NeedId.Rest, out var need))
+			float num = being.Needs.GetNeed(NeedIdH.Sleep).Demand;
+			if (being.Needs.TryGetNeed(NeedIdH.Rest, out var need))
 			{
 				num = Math.Max(num, need.Demand);
 			}
