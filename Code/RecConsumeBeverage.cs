@@ -45,7 +45,7 @@ namespace MoreBeverages.AI.Recreation {
 			{
 				drinkType = trait.BeverageOfChoice;
 			} else {
-				List<MatType> group = MatType.GetGroup(MatGroup.HDrink);
+				List<MatType> group = MatType.GetGroup(MatGroupIdH.Drink);
 				drinkType = ad.S.Rng.From(group).Id;
 			}
 			ad.Vars.SetString("DrinkType", drinkType);
@@ -73,7 +73,7 @@ namespace MoreBeverages.AI.Recreation {
 			}
 			else
 			{
-				if (!being.S.Sys.Inventory.HasAnyOf(MatType.GetGroup(MatGroup.HDrink)))
+				if (!being.S.Sys.Inventory.HasAnyOf(MatType.GetGroup(MatGroupIdH.Drink)))
 				{
 					return false;
 				}

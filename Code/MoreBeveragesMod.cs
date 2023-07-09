@@ -65,7 +65,7 @@ namespace MoreBeverages {
 							beverage = trait.BeverageOfChoice;
 						} else {
 							moodChange = -3;
-							List<MatType> group = MatType.GetGroup(MatGroup.HDrink);
+							List<MatType> group = MatType.GetGroup(MatGroupIdH.Drink);
 							beverage = worker.S.Rng.From(group).Id;
 						}
 						MatType bevType = MatType.Get(beverage);
