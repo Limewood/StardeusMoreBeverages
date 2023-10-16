@@ -4,6 +4,9 @@
     "NameKey" : "material.TeaLeaves",
     "IconId" : "Obj/Materials/TeaLeaves",
     "Property" : "Nutrient",
+    "Group" : "RawFoodInedible",
     "EnergyOutput" : 75.0,
+    "InternalValue" : 14.0,
+    "MatRarity" : 1,
     "Rarity" : 3
 }

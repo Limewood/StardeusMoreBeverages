@@ -1,10 +1,13 @@
 {
     "Id" : "Obj/Upgrades/BrewingAutomationUpgrade",
     "Type" : "CFD",
-    "Groups" : [ "Upgrade" ],
+    "Groups" : [ "Upgrade", "RareUpgrade" ],
     "MerchantAmountMin" : 1,
-    "MerchantAmountMax" : 10,
-    "Value" : 2000.0,
-    "Rarity" : 0.4,
+    "MerchantAmountMax" : 2,
+    "Rarity" : 0.3,
+    "Value" : 3000.0,
+    "SellPriceMultiplier" : 1.5,
+    "MerchantInvDefLockedSkipChance" : 1.0,
+    "MerchantInvTooExpensiveSkipBaseChance" : 0.2,
     "Volatility" : 0.01
 }

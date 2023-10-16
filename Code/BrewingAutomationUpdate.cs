@@ -17,8 +17,6 @@ namespace MoreBeverages.Components.Upgrades
 
         private const string BrewingMachineDefId = "Objects/Devices/CoffeeMaker";
 
-		public override bool IsStackable => false;
-
 		public override string Icon => "Obj/Upgrades/BrewingAutomationUpgrade";
 
 		public override string Title => "obj.upgrades.brewingautomationupgrade".T();

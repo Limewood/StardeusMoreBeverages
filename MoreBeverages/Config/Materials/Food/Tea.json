@@ -6,5 +6,6 @@
     "Property" : "Addictive",
     "Group" : "Drink",
     "EnergyOutput" : 180.0,
+    "MatRarity" : 1,
     "Rarity" : 3
 }

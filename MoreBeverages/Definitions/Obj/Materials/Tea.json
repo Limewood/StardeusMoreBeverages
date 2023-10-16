@@ -34,7 +34,6 @@
             "Component" : "Flammable",
             "Properties" : [
                 { "Key" : "IgnitionTemperatureCelsius", "Int" : 250 },
-                { "Key" : "MeltingTemperatureCelsius", "Int" : 500 },
                 { "Key" : "FireChance", "Float" : 0.5 }
             ]
         }

@@ -29,15 +29,6 @@
             "Properties" : [
                 { "Key" : "Aesthetics", "Float" : 5 }
             ]
-        },
-        {
-            "Component" : "Flammable",
-            "Properties" : [
-                { "Key" : "IgnitionTemperatureCelsius", "Int" : 200 },
-                { "Key" : "MeltingTemperatureCelsius", "Int" : 500 },
-                { "Key" : "FireDamageMinHealthPercent", "Float" : 0.7 },
-                { "Key" : "FireChance", "Float" : 0.9 }
-            ]
         }
     ]
 }
