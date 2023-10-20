@@ -2,7 +2,7 @@
     "Layer" : "FreeEntities",
     "ParentId" : "Obj/Upgrades/BaseUpgrade",
     "Researchable" : {
-        "Prerequisites" : [ "Research/AutoKitchen" ]
+        "Prerequisites" : [ "Research/LifeSupport/FoodProductionImproved" ]
     },
     "Components" : [
         {

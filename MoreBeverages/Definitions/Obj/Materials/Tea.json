@@ -2,7 +2,7 @@
     "Layer" : "FreeEntities",
     "ParentId" : "Obj/Materials/BaseMaterial",
     "Researchable" : {
-        "Prerequisites" : [ "Research/Coffee" ]
+        "Prerequisites" : [ "Research/LifeSupport/Coffee" ]
     },
     "Components" : [
         {

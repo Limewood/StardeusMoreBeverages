@@ -1,6 +1,9 @@
 {
     "Layer" : "FreeEntities",
     "ParentId" : "Obj/Plants/BasePlant",
+    "Researchable" : {
+        "Prerequisites" : [ "Research/LifeSupport/Coffee" ]
+    },
     "Components" : [
         {
             "Component" : "ObjGraphics",
@@ -16,8 +19,7 @@
                 {
                     "Key" : "HarvestOutput",
                     "RawMaterials" : [
-                        { "TypeId" : "TeaLeaves", "StackSize" : 1 },
-                        { "TypeId" : "PlantFiber", "StackSize" : 1 }
+                        { "TypeId" : "TeaLeaves", "StackSize" : 1 }
                     ]
                 },
                 { "Key" : "GrowthRate", "Float" : 0.15 },
